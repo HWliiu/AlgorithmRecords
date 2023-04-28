@@ -1,14 +1,16 @@
 #include <stdio.h>
 
+// 插入排序
 void insert_sort(int a[], int n)
 {
-    for (int i = 2; i <= n; i++)
+    for (int i = 2; i <= n; i++) // a[0]是哨兵位， i从第二个元素开始
     {
         if (a[i] < a[i - 1])
         {
             a[0] = a[i];
             int j;
-            for (j = i - 1; a[0] < a[j]; a[j + 1] = a[j], j--);
+            for (j = i - 1; a[0] < a[j]; a[j + 1] = a[j], j--)
+                ;
             a[j + 1] = a[0];
         }
     }
@@ -24,11 +26,14 @@ void b_insert_sort(int a[], int n)
         while (l <= r)
         {
             m = (l + r) / 2;
-            if (a[m] < a[i]) l = m + 1;
-            else r = m - 1;
-        }
+            if (a[m] < a[i])
+                l = m + 1;
+            else
+                r = m - 1;
+        } // l或r即找到的位置
         a[0] = a[i];
-        for (int j = i - 1; j >= l; a[j + 1] = a[j], j--);
+        for (int j = i - 1; j >= l; a[j + 1] = a[j], j--)
+            ;
         a[l] = a[0];
     }
 }
@@ -43,18 +48,20 @@ void shell_sort(int a[], int n)
             {
                 a[0] = a[i];
                 int j;
-                for (j = i - d; j > 0 && a[0] < a[j]; a[j + d] = a[j], j -= d);
+                for (j = i - d; j > 0 && a[0] < a[j]; a[j + d] = a[j], j -= d)
+                    ;
                 a[j + d] = a[0];
             }
         }
     }
 }
 
+// 交换排序
 void bubble_sort(int a[], int n)
 {
     for (int i = n; i > 1; i--)
     {
-        bool flag = false;
+        bool flag = true; // 如果一次冒泡中都没有交换过，说明列表已经有序了
         for (int j = 1; j < i; j++)
         {
             if (a[j] > a[j + 1])
@@ -62,10 +69,11 @@ void bubble_sort(int a[], int n)
                 a[0] = a[j];
                 a[j] = a[j + 1];
                 a[j + 1] = a[0];
-                flag = true;
+                flag = false;
             }
         }
-        if (!flag) return;
+        if (flag)
+            return;
     }
 }
 
@@ -77,9 +85,11 @@ void quick_sort(int a[], int l, int r)
         a[0] = a[i];
         while (i < j)
         {
-            while (i < j && a[j] > a[0]) j--;
+            while (i < j && a[j] > a[0])
+                j--;
             a[i] = a[j];
-            while (i < j && a[i] < a[0]) i++;
+            while (i < j && a[i] < a[0])
+                i++;
             a[j] = a[i];
         }
         a[i] = a[0];
@@ -88,13 +98,15 @@ void quick_sort(int a[], int l, int r)
     }
 }
 
+// 选择排序
 void select_sort(int a[], int n)
 {
     for (int i = 1; i < n; i++)
     {
-        int m = i;
+        int m = i; // 记录当前最小值的下标
         for (int j = i + 1; j <= n; j++)
-            if (a[j] < a[m]) m = j;
+            if (a[j] < a[m])
+                m = j;
         if (i != m)
         {
             a[0] = a[i];
@@ -109,7 +121,8 @@ void adjust_down(int a[], int n, int k)
     a[0] = a[k];
     for (int i = k * 2; i <= n; i *= 2)
     {
-        if (i < n && a[i] < a[i + 1]) i++;
+        if (i < n && a[i] < a[i + 1])
+            i++; // 判断是否有右孩子节点，并选择更大的那个
         if (a[0] < a[i])
         {
             a[k] = a[i];
@@ -123,16 +136,16 @@ void adjust_down(int a[], int n, int k)
 void adjust_up(int a[], int k)
 {
     a[0] = a[k];
-    int i;
-    for (i = k / 2; i > 0 && a[0] > a[i]; a[k] = a[i], k = i, i /= 2);
+    for (int i = k / 2; i > 0 && a[0] > a[i]; a[k] = a[i], k = i, i /= 2)
+        ;
     a[k] = a[0];
 }
 void build_heap(int a[], int n)
 {
-    for (int i = n / 2; i > 0; i--)
-        adjust_down(a, n, i);
-    // for(int i=2;i<=n;i++)
-    // adjust_up(a,i);
+    // for (int i = n / 2; i > 0; i--)
+    //     adjust_down(a, n, i);
+    for (int i = 2; i <= n; i++)
+        adjust_up(a, i);
 }
 void heap_sort(int a[], int n)
 {
@@ -146,29 +159,32 @@ void heap_sort(int a[], int n)
     }
 }
 
-void merge(int a[], int l, int m, int r)
+void merge(int a[], int l, int m, int r, int *&b)
 {
-    static int *b = new int[r - l + 1];
     int i, j, k;
-    for (k = l; k <= r; b[k] = a[k], k++);
+    for (k = l; k <= r; b[k] = a[k], k++)
+        ;
     for (i = l, j = m + 1, k = l; i <= m && j <= r; k++)
     {
-        if (a[i] < a[j])
+        if (b[i] <= b[j])
             a[k] = b[i++];
         else
             a[k] = b[j++];
     }
-    while (i <= m) a[k++] = b[i++];
-    while (j <= r) a[k++] = b[j++];
+    while (i <= m)
+        a[k++] = b[i++];
+    while (j <= r)
+        a[k++] = b[j++];
 }
 void merge_sort(int a[], int l, int r)
 {
+    static int *b = new int[r + 1]; // static 变量只在第一次执行时创建
     if (l < r)
     {
         int m = (l + r) / 2;
         merge_sort(a, l, m);
         merge_sort(a, m + 1, r);
-        merge(a, l, m, r);
+        merge(a, l, m, r, b);
     }
 }
 
@@ -176,6 +192,8 @@ int main()
 {
     // a[0]是哨兵位
     int a[] = {0, 312, 126, 272, 226, 28, 165, 123};
-    merge_sort(a, 1, 7);
-    for (int i = 1; i <= 7; printf("%d ", a[i]), i++);
+    int n = sizeof(a) / sizeof(a[0]) - 1;
+    heap_sort(a, n);
+    for (int i = 1; i <= n; printf("%d ", a[i]), i++)
+        ;
 }

@@ -30,7 +30,7 @@ void b_insert_sort(int a[], int n)
                 l = m + 1;
             else
                 r = m - 1;
-        } // l或r即找到的位置
+        } // 注意循环条件 l<=r 中要取等号，循环结束后 l 为比查找值大的数的位置， r 为比查找值小的数的位置
         a[0] = a[i];
         for (int j = i - 1; j >= l; a[j + 1] = a[j], j--)
             ;

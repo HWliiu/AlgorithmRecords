@@ -240,7 +240,7 @@ void intersection(Node *&h1, Node *&h2) // h1,h2为带头节点的有序链表
 }
 
 // 判断h2是不是h1的子串
-bool is_substring(Node *&h1, Node *&h2) // h1,h2为带头节点的有序链表
+bool pattern(Node *&h1, Node *&h2) // h1,h2为带头节点的有序链表
 {
     Node *p1 = h1->next, *p2 = h2->next, *pre = p1;
     while (p1 && p2)
@@ -262,10 +262,10 @@ bool is_substring(Node *&h1, Node *&h2) // h1,h2为带头节点的有序链表
     return false;
 }
 
-void display(Node *&h, bool skipF = false)
+void display(Node *&h, bool skipH = false)
 {
     cout << "输出序列：" << endl;
-    for (Node *p = skipF ? h->next : h; p; p = p->next)
+    for (Node *p = skipH ? h->next : h; p; p = p->next)
         cout << p->data << " ";
     cout << endl;
 }

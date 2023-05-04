@@ -11,33 +11,41 @@ void find_prime1(int n)
         for (int j = 2; j <= int(sqrt(double(i))); j++)
         {
             if (i % j == 0)
+            {
                 flag = false;
+                break;
+            }
         }
         if (flag)
             cout << i << " ";
     }
 }
 
+// 筛法求素数
 void find_prime2(int n)
 {
-    bool is_prime[n] = {0}; // 素数表
+    bool *not_prime = new bool[n]{0};
     for (int i = 2; i <= n; i++)
     {
-        if (is_prime[i])
+        if (not_prime[i])
             continue;
 
         bool flag = true;
         for (int j = 2; j <= int(sqrt(double(i))); j++)
             if (i % j == 0)
+            {
                 flag = false;
+                break;
+            }
 
         if (flag) // i是素数
         {
             for (int m = 1, k = i; k <= n; m++, k = i * m)
-                is_prime[k] = 1; // 筛除i的倍数
+                not_prime[k] = 1; // 筛除i的倍数
             cout << i << " ";
         }
     }
+    delete[] not_prime;
 }
 
 int main()

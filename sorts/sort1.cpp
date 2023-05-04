@@ -142,10 +142,10 @@ void adjust_up(int a[], int k)
 }
 void build_heap(int a[], int n)
 {
-    // for (int i = n / 2; i > 0; i--)
-    //     adjust_down(a, n, i);
-    for (int i = 2; i <= n; i++)
-        adjust_up(a, i);
+    for (int i = n / 2; i > 0; i--)
+        adjust_down(a, n, i);
+    // for (int i = 2; i <= n; i++)
+    //     adjust_up(a, i);
 }
 void heap_sort(int a[], int n)
 {

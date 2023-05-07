@@ -57,7 +57,7 @@ class QueueWTag
 {
     int max_size;
     int *data;
-    bool tag;
+    bool tag; // 用tag区分队满和队空
 
 public:
     int front, rear;
